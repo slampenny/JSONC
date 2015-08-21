@@ -1,4 +1,5 @@
 /*global gzip, Base64*/
+
 (function () {
 
   var root,
@@ -272,7 +273,7 @@
    */
   JSONC.pack = function (json, bCompress) {
     var str = JSON.stringify((bCompress ? JSONC.compress(json) : json));
-    return atob(String.fromCharCode.apply(String, gzip.zip(str,{level:9})));
+    return btoa(String.fromCharCode.apply(String, pako.deflate(str,{level:9})));
   };
   /**
    * Decompress a compressed JSON
@@ -307,8 +308,8 @@
    * @returns {Object}
    */
   JSONC.unpack = function (gzipped, bDecompress) {
-    var aArr = getArr(btoa(gzipped)),
-      str = String.fromCharCode.apply(String, gzip.unzip(aArr,{level:9})),
+    var aArr = getArr(atob(gzipped)),
+      str = String.fromCharCode.apply(String, pako.inflate(aArr,{level:9})),
       json = JSON.parse(str);
     return bDecompress ? JSONC.decompress(json) : json;
   };

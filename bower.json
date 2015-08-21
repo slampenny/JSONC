@@ -4,5 +4,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/tcorral/JSONC.git"
+  },
+  "dependencies": {
+    "pako": "~0.2.7"
   }
 }
