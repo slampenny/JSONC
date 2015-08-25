@@ -273,8 +273,18 @@
    */
   JSONC.pack = function (json, bCompress) {
     var str = JSON.stringify((bCompress ? JSONC.compress(json) : json));
-    return btoa(String.fromCharCode.apply(String, pako.deflate(str,{level:9})));
+    return _arrayBufferToBase64(pako.deflate(str,{level:9}));
   };
+
+function _arrayBufferToBase64( bytes ) {
+    var binary = '';
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] );
+    }
+    return window.btoa( binary );
+}
+
   /**
    * Decompress a compressed JSON
    * @param json
